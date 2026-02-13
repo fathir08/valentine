@@ -32,6 +32,11 @@ window.onload = () => {
 
 // --- 3. NAVIGASI STEP ---
 function nextStep(step) {
+    // Mulai musik saat klik pertama (pindah ke step 2)
+    if (step === 2) {
+        playMusic();
+    }
+
     const allSteps = document.querySelectorAll('.step');
     allSteps.forEach(s => {
         s.classList.remove('active');
@@ -39,8 +44,9 @@ function nextStep(step) {
     });
 
     if (step === 2) {
-        document.getElementById('step2').classList.add('active');
-        document.getElementById('step2').style.display = 'block';
+        const target = document.getElementById('step2');
+        target.classList.add('active');
+        target.style.display = 'block';
         setTimeout(showScatteredPhotos, 500);
     } 
     else if (step === 'video') {
@@ -49,22 +55,21 @@ function nextStep(step) {
         videoStep.style.display = 'block';
         
         const myVideo = document.getElementById('loveVideo');
+        const music = document.getElementById('backsound');
         const btnGame = document.getElementById('btn-to-game');
-        
-        // Pastikan tombol sembunyi saat video mulai
-        btnGame.style.display = 'none';
 
-        // Mainkan video
-        myVideo.play().catch(e => console.log("Autoplay diblokir, user harus klik play"));
+        // LOGIKA SINKRONISASI:
+        // Saat video dimainkan, kecilkan atau pause musik
+        if (music) music.pause(); 
 
-        // LOGIKA UTAMA: Deteksi video selesai
+        myVideo.play();
+
+        // Saat video selesai, jalankan musik lagi dan munculkan tombol
         myVideo.onended = function() {
-            // Munculkan tombol dengan animasi smooth
+            if (music) music.play(); 
             btnGame.style.display = 'block';
             btnGame.style.animation = 'fadeIn 0.5s ease-in';
-            
-            // Opsional: Beri peringatan kecil atau ganti teks caption
-            document.querySelector('.video-caption').innerText = "Makasih udah nonton! Sekarang lanjut yuk..";
+            document.querySelector('.video-caption').innerText = "Makasih udah nonton! Lanjut yuk..";
         };
     } 
     else if (step === 'game') {
@@ -78,6 +83,38 @@ function nextStep(step) {
             target.classList.add('active');
             target.style.display = 'block';
         }
+    }
+}
+
+function playMusic() {
+    const music = document.getElementById('backsound');
+    if (music) {
+        music.load(); // Memaksa browser memuat ulang file
+        music.volume = 0.2;
+        
+        // Memastikan musik diputar setelah interaksi user
+        let playPromise = music.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                console.log("Musik diputar!");
+            }).catch(error => {
+                console.log("Autoplay dicegah, akan dicoba lagi saat klik selanjutnya.");
+            });
+        }
+    }
+}
+
+function toggleMute() {
+    const music = document.getElementById('backsound');
+    const muteIcon = document.getElementById('mute-icon');
+
+    if (music.muted) {
+        music.muted = false;
+        muteIcon.innerText = "🔊";
+    } else {
+        music.muted = true;
+        muteIcon.innerText = "🔇";
     }
 }
 
