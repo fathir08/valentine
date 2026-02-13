@@ -1,0 +1,330 @@
+:root {
+    --bg: #fff0f3;
+    --primary: #ff4d6d;
+    --dark: #590d22;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: 'Quicksand', sans-serif;
+    color: var(--dark);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Mencegah scroll */
+}
+
+.main-card {
+    background: white;
+    width: 90%;
+    max-width: 400px; /* Ukuran pas untuk HP */
+    min-height: 500px;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.step {
+    display: none; /* Sembunyikan semua step awal */
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.step.active {
+    display: block; /* Hanya tampilkan yang aktif */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 { font-size: 1.8rem; margin: 15px 0; }
+h2 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--primary); }
+
+.badge {
+    background: var(--primary);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.polaroid-single {
+    background: white;
+    padding: 10px 10px 30px 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    margin: 20px 0;
+    transform: rotate(-2deg);
+}
+
+.polaroid-single img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.love-letter {
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+button:active { transform: scale(0.95); }
+
+.heart-float {
+    position: fixed;
+    pointer-events: none;
+    animation: moveUp 4s linear forwards;
+}
+
+@keyframes moveUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.heart-float {
+    pointer-events: none; /* Supaya tidak bisa diklik dan menghalangi tombol */
+    user-select: none;
+}
+
+/* Pop-up Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(89, 13, 34, 0.6); /* Warna dark pink transparan */
+    backdrop-filter: blur(5px);
+    display: none; /* Sembunyi secara default */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+/* Modal Box */
+.modal-content {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 25px;
+    text-align: center;
+    width: 85%;
+    max-width: 350px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi membal (bounce) */
+}
+
+/* Munculkan Modal dengan Class Active */
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-header .heart-icon {
+    font-size: 50px;
+    display: block;
+    margin-bottom: 10px;
+    animation: heartBeat 1s infinite;
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+}
+
+.btn-close {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Game Container */
+.game-container {
+    width: 100%;
+    height: 300px;
+    background: #fff0f3;
+    border-radius: 15px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    border: 2px dashed var(--primary);
+}
+
+.score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--primary);
+    z-index: 5;
+}
+
+.target-heart {
+    position: absolute;
+    font-size: 30px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s;
+}
+
+.target-heart:active {
+    transform: scale(1.5);
+}
+
+.quote-box {
+    margin-top: 25px;
+    padding: 15px;
+    background: #fff0f3;
+    border-radius: 15px;
+    border-left: 4px solid var(--primary);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.quote-box:hover {
+    background: #ffe5ec;
+}
+
+#quote-text {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--dark);
+}
+
+.footer-note {
+    font-size: 0.7rem;
+    margin-top: 15px;
+    opacity: 0.5;
+}
+
+.photo-scatter-container {
+    width: 100%;
+    height: 400px; /* Tambah tinggi sedikit agar tidak sesak */
+    position: relative;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-text {
+    position: absolute;
+    width: 80%;
+    z-index: 0; /* Taruh di paling belakang */
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+    color: var(--primary);
+    text-align: center;
+    pointer-events: none; /* Supaya tidak menghalangi klik ke foto */
+}
+
+.polaroid-fly {
+    position: absolute;
+    width: 100px; /* Perkecil sedikit agar tidak menumpuk */
+    background: white;
+    padding: 6px 6px 15px 6px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border: 1px solid #fff;
+    opacity: 0;
+    transform: scale(0.2);
+    transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 2; /* Foto berada di depan teks */
+}
+
+.polaroid-fly img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+}
+
+.polaroid-fly.show {
+    opacity: 1;
+    /* Variabel ini dikontrol JS untuk posisi terbang */
+    transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--tr));
+}
+.caption-polaroid {
+    font-family: 'Dancing Script', cursive;
+    font-size: 0.8rem;
+    color: #555;
+    margin-top: 8px;
+    text-align: center;
+    line-height: 1.2;
+    /* Memberi efek memudar agar narasi muncul bareng foto */
+    opacity: 0.9;
+}
+
+.caption-text {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 5; /* Pastikan caption bawah tidak terhalang */
+}
+
+.video-container {
+    width: 100%;
+    max-width: 300px;
+    border: 8px solid white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.video-caption {
+    font-style: italic;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
